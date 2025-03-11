@@ -1,3 +1,4 @@
+//Grabs the Product Info from json
 function convertToJson(res) {
   if (res.ok) {
     return res.json();
@@ -16,6 +17,7 @@ export default class ProductData {
       .then(convertToJson)
       .then((data) => data);
   }
+  
   async findProductById(id) {
     const products = await this.getData();
     return products.find((item) => item.Id === id);
