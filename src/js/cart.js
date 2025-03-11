@@ -1,9 +1,10 @@
-import { getLocalStorage } from "./utils.mjs";
+import { getLocalStorage, renderCartCount } from "./utils.mjs";
 
 //gets local storage, maps it to the template then populates the htm using the template literal
 function renderCartContents() {
   const cartItems = getLocalStorage('so-cart');
-  if (cartItems != null) {
+  //fixing the error on cart page when cart is empty so so-cart is null
+  if (cartItems !== null && cartItems !== undefined) {
     const htmlItems = cartItems.map((item) => cartItemTemplate(item));
     document.querySelector('.product-list').innerHTML = htmlItems.join('');
   }
@@ -29,5 +30,5 @@ function cartItemTemplate(item) {
 
   return newItem;
 }
-
+//populate the cart info on cart page
 renderCartContents();
