@@ -1,23 +1,17 @@
-import { getLocalStorage, setLocalStorage } from "./utils.mjs";
-import ProductData from "./ProductData.mjs";
+//js for the product page
+//get the productid from dynamic searchquery (url) using getParams in utils.js
+//create product Data class from json using ProductData in ProductData.js
+//create a ProductDetails class based on the id and data class.
+//initialize productDetails which builds the product page detils
 
-const dataSource = new ProductData("tents");
+import ProductData from './ProductData.mjs';
+import ProductDetails from './ProductDetails.mjs';
+import { getParams, renderCartCount  } from './utils.mjs';
 
-function addProductToCart(product) {
-  let cartList = getLocalStorage("so-cart");
-  if (!Array.isArray(cartList)) {
-    cartList = [];
-  }
-  cartList.push(product);
-  setLocalStorage("so-cart", cartList);
-}
-// add to cart button event handler
-async function addToCartHandler(e) {
-  const product = await dataSource.findProductById(e.target.dataset.id);
-  addProductToCart(product);
-}
+const productId = getParams('product');
+const dataSource = new ProductData('tents');
 
-// add listener to Add to Cart button
-document
-  .getElementById("addToCart")
-  .addEventListener("click", addToCartHandler);
+const product = new ProductDetails(productId, dataSource);
+product.init();
+//gets cart count for products page
+renderCartCount();
