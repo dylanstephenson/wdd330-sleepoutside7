@@ -2,6 +2,18 @@
 //also contains the addToCart method
 import { setLocalStorage, renderCartCount} from './utils.mjs';
 
+//function to generate discount
+export function generateDiscount(product) {
+    if (product.SuggestedRetailPrice > product.FinalPrice) {
+        const discount = product.SuggestedRetailPrice - product.FinalPrice;
+        const discountPercentage = Math.round(discount / product.SuggestedRetailPrice * 100);
+        return `<p class="product-card-price"><span class="product-original">$${product.SuggestedRetailPrice}</span> <span class="product-final">$${product.FinalPrice}</span> <span class="product-percentage">(-${discountPercentage}%)</span>
+        </p>`
+    } else {
+        return `<p class="product-card-price">$${product.FinalPrice}</p>`
+    }
+}
+
 function productDetailsTemplate(product) {
     return `<section class="product-detail"> <h3>${product.Brand.Name}</h3>
       <h2 class="divider">${product.NameWithoutBrand}</h2>
@@ -10,7 +22,7 @@ function productDetailsTemplate(product) {
         src="${product.Image}"
         alt="${product.NameWithoutBrand}"
       />
-      <p class="product-card__price">$${product.FinalPrice}</p>
+      ${generateDiscount(product)}
       <p class="product__color">${product.Colors[0].ColorName}</p>
       <p class="product__description">
       ${product.DescriptionHtmlSimple}
