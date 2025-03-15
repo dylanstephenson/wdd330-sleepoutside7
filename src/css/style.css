@@ -260,3 +260,19 @@ footer {
   font-size: var(--small-font);
   padding: 1em;
 }
+
+/* Style discount */
+span.product-original {
+  text-decoration: line-through;
+  color: #303030;
+}
+
+span.product-final {
+  color: green;
+}
+
+span.product-percentage {
+  font-style: italic;
+  font-size: 0.9rem;
+  color: red;
+}
