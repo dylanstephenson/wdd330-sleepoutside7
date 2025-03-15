@@ -2,6 +2,7 @@
 //also contains the addToCart method
 import { setLocalStorage, renderCartCount} from './utils.mjs';
 
+//function to generate discount
 export function generateDiscount(product) {
     if (product.SuggestedRetailPrice > product.FinalPrice) {
         const discount = product.SuggestedRetailPrice - product.FinalPrice;
