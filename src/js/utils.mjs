@@ -51,9 +51,8 @@ export function renderWithTemplate(templateFn, parentElement) {
 
 export async function loadHeaderFooter() {
   // Detect if we're in `src/` (index.html) or a subdirectory (cart/index.html)
-  const basePath = window.location.pathname.includes("/cart") ||
-                   window.location.pathname.includes("/product_pages") ? 
-                   ".." : "."; 
+  const basePath = window.location.pathname.split("/").length > 2 ? ".." : ".";
+
 
   // Grab header/footer elements
   const header = document.getElementById("main-header");
@@ -86,36 +85,35 @@ export async function loadTemplate(path) {
 }
 
 // FIXED: Cart superscript updates correctly across all pages
-export function renderCartCount() {
-  const cartCounter = document.getElementById("cart-count");
-  if (!cartCounter) {
-    console.warn("Cart counter element not found.");
-    return;
-  }
-
+//cart superscript
+export function renderCartCount(){
+  const cartCounter = document.getElementById('cart-count');
   const cartCount = getCartCount();
-  cartCounter.innerText = cartCount;
-
-  if (cartCount > 0) {
-    showCartCounter(cartCounter);
-  } else {
-    hideCartCounter(cartCounter);
+  //check if cart has items to toggle visibility
+  if (cartCount>0){
+    showElement(cartCounter);
   }
+  else{
+    hideElement(cartCounter);
+  }
+  //populate the div w/ the count
+  cartCounter.innerText = cartCount;
 }
-
-// Toggle cart counter visibility
-function showCartCounter(element) {
-  element.classList.add("visible");
-  element.classList.remove("hidden");
+//Toggle visibility of the cart depending on if something is in it
+//default is hidden
+export function showElement(element) {
+  element.classList.add('visible');
+  element.classList.remove('hidden');
 }
-
-function hideCartCounter(element) {
-  element.classList.add("hidden");
-  element.classList.remove("visible");
+export function hideElement(element) {
+  element.classList.add('hidden');
+  element.classList.remove('visible');
 }
-
-// FIXED: Prevent null issues when fetching cart count
 export function getCartCount() {
-  const cart = getLocalStorage("so-cart") || [];
-  return cart.length;
+  const cart = getLocalStorage('so-cart');
+  let cartCount = 0;
+  if (cart !== null && cart !== undefined) {
+    cartCount = cart.length;
+  }
+  return cartCount;
 }
