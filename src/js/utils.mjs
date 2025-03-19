@@ -1,25 +1,21 @@
-// wrapper for querySelector...returns matching element
+// Wrapper for querySelector...returns matching element
 export function qs(selector, parent = document) {
   return parent.querySelector(selector);
 }
-// or a more concise version if you are into that sort of thing:
-// export const qs = (selector, parent = document) => parent.querySelector(selector);
 
-// retrieve data from localstorage
+// Retrieve data from localstorage
 export function getLocalStorage(key) {
   return JSON.parse(localStorage.getItem(key));
 }
-// save data to local storage
-export function setLocalStorage(key, data) {
-  //get existing Data from localStorage.  If it doesn't exist yet, make an empty array
-  let existingData = getLocalStorage(key) || [];
-  //append the new data to the existingData
-  existingData.push(data);
 
-  //save to localStorage
+// Save data to local storage
+export function setLocalStorage(key, data) {
+  let existingData = getLocalStorage(key) || [];
+  existingData.push(data);
   localStorage.setItem(key, JSON.stringify(existingData));
 }
-// set a listener for both touchend and click
+
+// Set a listener for both touchend and click
 export function setClick(selector, callback) {
   qs(selector).addEventListener("touchend", (event) => {
     event.preventDefault();
@@ -28,51 +24,92 @@ export function setClick(selector, callback) {
   qs(selector).addEventListener("click", callback);
 }
 
-
-//week2 team - dynamic product data and details
-export function getParams(param){
+// Get URL parameters
+export function getParams(param) {
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
-  const product = urlParams.get(param)
-  return product;
+  return urlParams.get(param);
 }
 
-//used by ProductList
-export function renderListWithTemplate(templateFn, parentElement, list, position = "afterbegin", clear=false){
+// Used by ProductList
+export function renderListWithTemplate(templateFn, parentElement, list, position = "afterbegin", clear = false) {
   const htmlStrings = list.map(templateFn);
-  //use clear to wipe the element before loading with the template
-  if (clear){
+  if (clear) {
     parentElement.innerHTML = '';
   }
   parentElement.insertAdjacentHTML(position, htmlStrings.join(''));
 }
 
+// Render header/footer with template
+export function renderWithTemplate(templateFn, parentElement) {
+  if (parentElement) {
+    parentElement.innerHTML = templateFn;
+  } else {
+    console.warn(`Element not found for template insertion.`);
+  }
+}
+
+export async function loadHeaderFooter() {
+  // Detect if we're in `src/` (index.html) or a subdirectory (cart/index.html)
+  const basePath = window.location.pathname.split("/").length > 2 ? ".." : ".";
+
+
+  // Grab header/footer elements
+  const header = document.getElementById("main-header");
+  const footer = document.getElementById("main-footer");
+
+  // Grab the template data using the correct basePath
+  const headerTemplate = await loadTemplate(`${basePath}/public/partials/header.html`);
+  const footerTemplate = await loadTemplate(`${basePath}/public/partials/footer.html`);
+
+  // Insert templates into the DOM
+  renderWithTemplate(headerTemplate, header);
+  renderWithTemplate(footerTemplate, footer);
+
+  // Ensure the cart count updates AFTER the header is fully loaded
+  setTimeout(() => {
+    renderCartCount();
+  }, 100);
+}
+
+// Fetch template content
+export async function loadTemplate(path) {
+  try {
+    const response = await fetch(path);
+    if (!response.ok) throw new Error(`Failed to load ${path}`);
+    return await response.text();
+  } catch (error) {
+    console.error("Error loading template:", error);
+    return "";
+  }
+}
+
+// FIXED: Cart superscript updates correctly across all pages
 //cart superscript
 export function renderCartCount(){
   const cartCounter = document.getElementById('cart-count');
   const cartCount = getCartCount();
-
+  //check if cart has items to toggle visibility
   if (cartCount>0){
-    showCartCounter(cartCounter);
+    showElement(cartCounter);
   }
   else{
-    hideCartCounter(cartCounter);
+    hideElement(cartCounter);
   }
-  console.log(cartCount)
+  //populate the div w/ the count
   cartCounter.innerText = cartCount;
-
 }
 //Toggle visibility of the cart depending on if something is in it
 //default is hidden
-function showCartCounter(element){
+export function showElement(element) {
   element.classList.add('visible');
   element.classList.remove('hidden');
 }
-function hideCartCounter(element){
+export function hideElement(element) {
   element.classList.add('hidden');
   element.classList.remove('visible');
 }
-function getCartCount() {
+export function getCartCount() {
   const cart = getLocalStorage('so-cart');
   let cartCount = 0;
   if (cart !== null && cart !== undefined) {
