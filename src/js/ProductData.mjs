@@ -29,7 +29,6 @@ export default class ProductData {
     return data.Result;
   }
 
-  
 
   // Fetches and returns details for a specific product by its ID.
   async findProductById(id) {
