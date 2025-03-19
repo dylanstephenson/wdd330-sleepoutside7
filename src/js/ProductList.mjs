@@ -24,16 +24,18 @@
             this.category = category;
             this.dataSource = dataSource;
             this.listElement = document.querySelector(listElement);
+            this.productList = [];
         }
-        async init(){
-            const productList = await this.dataSource.getData();
-            this.renderList(productList)
+        async init(sortBy = "name"){
+            this.productList = await this.dataSource.getData();
+            this.sortProducts(sortBy);
+            this.renderList(this.productList)
         }
         
         renderList(productList){
             //filter out bad products before sending to render
             this.filter(productList);
-            renderListWithTemplate(productCardTemplate, this.listElement, productList, 'afterbegin', false);
+            renderListWithTemplate(productCardTemplate, this.listElement, productList, 'afterbegin', true);
         }
     
         filter(productList){
@@ -45,6 +47,13 @@
                     delete productList[key];
                 }
             });
+        }
+        sortProducts(sortBy) {
+            if (sortBy === "name") {
+                this.productList.sort((a, b) => a.NameWithoutBrand.localeCompare(b.NameWithoutBrand))
+            } else if (sortBy === "price") {
+                this.productList.sort((a, b) => a.FinalPrice - b.FinalPrice)
+            }
         }
     
     }

@@ -11,6 +11,15 @@ const listing = new ProductList("tents", dataSource, "ul");
 //initialize listing object
 listing.init();
 
+// Update page with new sorted product list
+const sortBySelect = document.getElementById("sort-by");
+
+sortBySelect.addEventListener("change", () => {
+  if (listing) {
+    listing.init(sortBySelect.value);
+  }
+})
+
 async function init() {
     await loadHeaderFooter(); // Wait for the header to fully load
     // renderCartCount(); // Ensure the cart counter updates correctly
