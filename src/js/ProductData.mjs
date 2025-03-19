@@ -22,27 +22,12 @@ function convertToJson(res) {
 export default class ProductData {
   // Fetches and returns all products in a given category.
   async getData(category) {
-    console.log("Fetching data from:", baseURL + `products/search/${category}`);
-    try {
-        const response = await fetch(baseURL + `products/search/${category}`);
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        const data = await response.json(); // Ensure `data` is awaited properly
-        console.log("API Response Data:", data);
-        
-        if (!data || !data.Result) {
-            console.warn("No results found for category:", category);
-            return [];
-        }
-        
-        return data.Result; // Return the expected data structure
-    } catch (error) {
-        console.error("Error fetching data:", error);
-        return []; // Return an empty array to prevent further errors
-    }
-}
-
+  console.log("Fetching data for category:", category);
+  console.log("API Response:", data);
+    const response = await fetch(baseURL + `products/search/${category}`);
+    const data = await convertToJson(response);
+    return data.Result;
+  }
 
   
 
