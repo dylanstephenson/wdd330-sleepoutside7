@@ -7,7 +7,7 @@
 // findProductById(id) fetches and returns details for a specific product by its ID within the category.
 
 // Base URL is imported from the environment variables.
-const baseURL = import.meta.env.VITE_SERVER_URL;
+const baseURL = import.meta.env.VITE_SERVER_URL 
 
 // Converts the response to JSON if the response is okay. Otherwise, throws an error.
 function convertToJson(res) {
@@ -22,12 +22,10 @@ function convertToJson(res) {
 export default class ProductData {
   // Fetches and returns all products in a given category.
   async getData(category) {
-  console.log("Fetching data for category:", category);
-  console.log("API Response:", data);
     const response = await fetch(baseURL + `products/search/${category}`);
-    const data = await convertToJson(response);
+    const data = await convertToJson(response); 
     return data.Result;
-  }
+}
 
 
   // Fetches and returns details for a specific product by its ID.
