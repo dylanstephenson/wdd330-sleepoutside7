@@ -19,7 +19,7 @@ function productDetailsTemplate(product) {
       <h2 class="divider">${product.NameWithoutBrand}</h2>
       <img
         class="divider"
-        src="${product.Image}"
+        src="${product.Images.PrimaryLarge}"
         alt="${product.NameWithoutBrand}"
       />
       ${generateDiscount(product)}
@@ -51,7 +51,6 @@ export default class ProductDetail {
           .addEventListener('click', this.addToCart.bind(this));
     }
     addToCart(){
-
             setLocalStorage('so-cart', this.product);
              //update cart counter each time you add an item
              renderCartCount();

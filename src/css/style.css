@@ -276,3 +276,20 @@ span.product-percentage {
   font-size: 0.9rem;
   color: red;
 }
+
+.product-categories {
+  display: flex;
+  justify-content: space-around;
+  max-width: 50%;
+  margin: 1.5rem auto 0;
+  text-align: center;
+}
+
+.product-categories a {
+  text-decoration: none;
+  color: black;
+}
+
+.product-categories figcaption {
+  font-size: 0.8rem;
+}
