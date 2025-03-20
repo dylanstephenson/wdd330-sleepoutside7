@@ -4,18 +4,6 @@
 
 import { setLocalStorage, renderCartCount } from './utils.mjs';
 
-//function to generate discount
-export function generateDiscount(product) {
-  if (product.SuggestedRetailPrice > product.FinalPrice) {
-      const discount = product.SuggestedRetailPrice - product.FinalPrice;
-      const discountPercentage = Math.round(discount / product.SuggestedRetailPrice * 100);
-      return `<p class="product-card-price"><span class="product-original">$${product.SuggestedRetailPrice}</span> <span class="product-final">$${product.FinalPrice}</span> <span class="product-percentage">(-${discountPercentage}%)</span>
-      </p>`
-  } else {
-      return `<p class="product-card-price">$${product.FinalPrice}</p>`
-  }
-}
-
 // Template function that generates the HTML structure for the product details section.
 // It receives a product object and returns a string of HTML populated with product data.
 function productDetailsTemplate(product) {
