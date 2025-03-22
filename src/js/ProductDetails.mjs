@@ -40,22 +40,61 @@ export default class ProductDetail {
         this.product = {};
         this.dataSource = dataSource;
     }
-    async init() {
-        // use our datasource to get the details for the current product. findProductById will return a promise! use await or .then() to process it
-        this.product = await this.dataSource.findProductById(this.productId);
-        // once we have the product details we can render out the HTML
-        this.renderProductDetails("main");
-        // once the HTML is rendered we can add a listener to Add to Cart button
-        // Notice the .bind(this). Our callback will not work if we don't include that line. Review the readings from this week on 'this' to understand why.
-        document.getElementById('addToCart')
-          .addEventListener('click', this.addToCart.bind(this));
-    }
-    addToCart(){
+    // async init() {
+    //     // use our datasource to get the details for the current product. findProductById will return a promise! use await or .then() to process it
+    //     // this.product = await this.dataSource.findProductById(this.productId);
+    //     const productData = await this.dataSource.findProductById(this.productId);
+    //     // once we have the product details we can render out the HTML
+    //     // this.renderProductDetails("main");
+    //     this.product = productData;
 
-            setLocalStorage('so-cart', this.product);
-             //update cart counter each time you add an item
-             renderCartCount();
+    //      // Render the product details in the HTML.
+    //     //  document.querySelector('.product-details-container').innerHTML = productDetailsTemplate(this.product);
+        
+
+    //     // once the HTML is rendered we can add a listener to Add to Cart button
+    //     // Notice the .bind(this). Our callback will not work if we don't include that line. Review the readings from this week on 'this' to understand why.
+    //     document.getElementById('addToCart')
+    //       .addEventListener('click', this.addToCart.bind(this));
+    // }
+
+    async init() {
+        // Fetch product data dynamically using JSON
+        this.product = await this.dataSource.findProductById(this.productId);
+
+        // Render product details dynamically instead of relying on a static class
+        this.renderProductDetails();
+
+        // Attach event listener to dynamically created button
+        document.getElementById('addToCart').addEventListener('click', () => {
+            this.addToCart();
+        });
     }
+
+    renderProductDetails() {
+        // Select the main container to append details
+        const mainElement = document.querySelector('main');
+        if (!mainElement) {
+            console.error("No <main> element found!");
+            return;
+        }
+    }
+
+    addToCart(){
+        setLocalStorage('so-cart', this.product);
+            //update cart counter each time you add an item
+            renderCartCount();
+
+            // Add event listener to 'Add to Cart' button after rendering.
+        // This ensures that when the button is clicked, the product is added to the shopping cart.
+        const addToCartButton = document.getElementById('addToCart');
+        addToCartButton.addEventListener('click', () => {
+            setLocalStorage('so-cart', this.product); // Adds the product to localStorage (cart)
+            renderCartCount(); // Updates the cart count displayed on the page
+        });
+    }
+
+    
     renderProductDetails(selector){
         //method to generate HTML to display our product
         const element = document.querySelector(selector);

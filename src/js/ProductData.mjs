@@ -1,3 +1,6 @@
+// Base URL is imported from the environment variables.
+const baseURL = import.meta.env.VITE_SERVER_URL
+
 //Grabs the Product Info from json
 function convertToJson(res) {
   if (res.ok) {
@@ -7,19 +10,19 @@ function convertToJson(res) {
   }
 }
 
+// Exporting ProductData class
 export default class ProductData {
-  constructor(category) {
-    this.category = category;
-    this.path = `../json/${this.category}.json`;
+  // Fetches and returns all products in a given category.
+  async getData(category) {
+    const response = await fetch(`${baseURL}products/search/${category} `);
+    const data = await convertToJson(response);
+    return data.Result;
   }
-  getData() {
-    return fetch(this.path)
-      .then(convertToJson)
-      .then((data) => data);
-  }
-  
+
+  // Fetches and returns details for a specific product by its ID.
   async findProductById(id) {
-    const products = await this.getData();
-    return products.find((item) => item.Id === id);
+    const products = await fetch(`${baseURL}product/${id}`);
+    const data = await convertToJson(products);
+    return data.Result;
   }
 }
