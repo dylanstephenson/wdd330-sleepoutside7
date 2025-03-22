@@ -81,7 +81,7 @@ function cartItemTemplate(item) {
       <a href='#'>
         <h2 class='card__name'>${item.Name}</h2>
       </a>
-      <p class='cart-card__color'>${item.Colors[0].ColorName}</p>
+      <p class='cart-card__color'>${item.Colors}</p>
       <p class='cart-card__quantity'>Qty: ${item.Q || 1}</p>
       <p class='cart-card__price'>$${item.FinalPrice}</p>
     </li>
