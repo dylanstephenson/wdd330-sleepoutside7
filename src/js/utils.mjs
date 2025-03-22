@@ -8,12 +8,15 @@ export function getLocalStorage(key) {
   return JSON.parse(localStorage.getItem(key));
 }
 
-// Save data to local storage
 export function setLocalStorage(key, data) {
-  let existingData = getLocalStorage(key) || [];
-  existingData.push(data);
-  localStorage.setItem(key, JSON.stringify(existingData));
+  if (!key || !data) {
+    console.error("setLocalStorage: Invalid key or data", { key, data });
+    return;
+  }
+  localStorage.setItem(key, JSON.stringify(data));
+
 }
+
 
 // Set a listener for both touchend and click
 export function setClick(selector, callback) {
@@ -89,6 +92,7 @@ export async function loadTemplate(path) {
 export function renderCartCount(){
   const cartCounter = document.getElementById('cart-count');
   const cartCount = getCartCount();
+
   //check if cart has items to toggle visibility
   if (cartCount>0){
     showElement(cartCounter);
@@ -110,7 +114,7 @@ export function hideElement(element) {
   element.classList.remove('visible');
 }
 export function getCartCount() {
-  const cart = getLocalStorage('so-cart');
+  const cart = getLocalStorage('cart');
   let cartCount = 0;
   if (cart !== null && cart !== undefined) {
     cartCount = cart.length;

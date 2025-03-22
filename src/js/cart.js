@@ -2,7 +2,7 @@
 import { loadHeaderFooter, renderCartCount } from "./utils.mjs";
 import ShoppingCart from "./ShoppingCart.mjs";
 
-const cart = new ShoppingCart("so-cart", ".product-list"); //Create new instance of Shopping Cart
+const cart = new ShoppingCart("cart", ".product-list"); //Create new instance of Shopping Cart
 cart.renderCartContents(); //pull cart contents from local storage
 loadHeaderFooter(); //load the header/footer templates
 cart.calculateTotal(); //
