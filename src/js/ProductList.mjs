@@ -22,14 +22,18 @@
             this.category = category;
             this.dataSource = dataSource;
             this.listElement = document.querySelector(".product-list");
+            this.productList = [];
         }
-        async init(){
-            const productList = await this.dataSource.getData(this.category);
-            this.renderList(productList)
+        async init(sortBy = "name"){
+            this.productList = await this.dataSource.getData(this.category);
+            this.sortProducts(sortBy);
+            this.renderList(this.productList)
+            
         }
         
         renderList(productList){
             //filter out bad products before sending to render
+            this.listElement.textContent = ''
             this.filter(productList);
             renderListWithTemplate(productCardTemplate, this.listElement, productList, 'afterbegin', false);
         }
@@ -43,6 +47,13 @@
                     delete productList[key];
                 }
             });
+        }
+        sortProducts(sortBy) {
+            if (sortBy === "name") {
+                this.productList.sort((a, b) => a.NameWithoutBrand.localeCompare(b.NameWithoutBrand))
+            } else if (sortBy === "price") {
+                this.productList.sort((a, b) => a.FinalPrice - b.FinalPrice)
+            }
         }
     
     }

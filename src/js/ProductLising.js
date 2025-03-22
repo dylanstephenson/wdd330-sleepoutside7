@@ -14,5 +14,16 @@ const listElement = document.querySelector(".product-list");
 // then create an instance of our ProductList class and send it the correct information.
 const myList = new ProductList(category, dataSource, listElement);
 
-// finally call the init method to show our products
+// Update page with new sorted product list
+const sortBySelect = document.getElementById("sort-by");
+
 myList.init();
+
+sortBySelect.addEventListener("change", () => {
+  if (myList) {
+    myList.init(sortBySelect.value);
+  }
+})
+
+
+// finally call the init method to show our products
