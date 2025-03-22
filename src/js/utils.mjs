@@ -59,8 +59,8 @@ export async function loadHeaderFooter() {
   const footer = document.getElementById("main-footer");
 
   // Grab the template data using the correct basePath
-  const headerTemplate = await loadTemplate(`${basePath}/partials/header.html`);
-  const footerTemplate = await loadTemplate(`${basePath}/partials/footer.html`);
+  const headerTemplate = await loadTemplate(`${basePath}/public/partials/header.html`);
+  const footerTemplate = await loadTemplate(`${basePath}/public/partials/footer.html`);
 
   // Insert templates into the DOM
   renderWithTemplate(headerTemplate, header);
