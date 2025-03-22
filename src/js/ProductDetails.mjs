@@ -1,40 +1,23 @@
 // This module is responsible for dynamically rendering product details on the product page
 // It feeds data into `product.js`, which then populates the `product_pages/index.html` page with the relevant information.
 // Additionally, it includes an 'Add to Cart' functionality for adding the product to the shopping cart.
-import { setLocalStorage, renderCartCount} from './utils.mjs';
 
-//function to generate discount
+import { setLocalStorage, getLocalStorage, renderCartCount } from './utils.mjs';
+
+// Function to generate discount details based on price comparison
 export function generateDiscount(product) {
     if (product.SuggestedRetailPrice > product.FinalPrice) {
         const discount = product.SuggestedRetailPrice - product.FinalPrice;
-        const discountPercentage = Math.round(discount / product.SuggestedRetailPrice * 100);
-        return `<p class="product-card-price"><span class="product-original">$${product.SuggestedRetailPrice}</span> <span class="product-final">$${product.FinalPrice}</span> <span class="product-percentage">(-${discountPercentage}%)</span>
-        </p>`
+        const discountPercentage = Math.round((discount / product.SuggestedRetailPrice) * 100);
+        return `
+        <p class="product-card-price">
+            <span class="product-original">$${product.SuggestedRetailPrice}</span> 
+            <span class="product-final">$${product.FinalPrice}</span> 
+            <span class="product-percentage">(-${discountPercentage}%)</span>
+        </p>`;
     } else {
-        return `<p class="product-card-price">$${product.FinalPrice}</p>`
+        return `<p class="product-card-price">$${product.FinalPrice}</p>`;
     }
-}
-
-// Template function that generates the HTML structure for the product details section.
-// It receives a product object and returns a string of HTML populated with product data.
-function productDetailsTemplate(product) {
-    return `<section class="product-detail"> 
-              <h3>${product.Brand.Name}</h3> <!-- Displays the product's brand -->
-              <h2 class="divider">${product.NameWithoutBrand}</h2> <!-- Displays the product's name without the brand -->
-              <img
-                class="divider"
-                src="${product.Images.PrimaryLarge}" <!-- Displays the main product image -->
-                alt="${product.NameWithoutBrand}" <!-- Image alt text for accessibility -->
-              />
-              <p class="product-card__price">$${product.FinalPrice}</p> <!-- Displays the product's price -->
-              <p class="product__color">${product.Colors[0].ColorName}</p> <!-- Displays the product's first color -->
-              <p class="product__description">
-                ${product.DescriptionHtmlSimple} <!-- Displays a simplified HTML description of the product -->
-              </p>
-              <div class="product-detail__add">
-                <button id="addToCart" data-id="${product.Id}">Add to Cart</button> <!-- Add to Cart button -->
-              </div>
-            </section>`;
 }
 
 // The ProductDetail class handles fetching and displaying detailed product information
@@ -51,22 +34,71 @@ export default class ProductDetail {
     // Initializes the class by fetching the product data based on the product ID
     // and rendering the details in the HTML page. It also sets up the event listener for 'Add to Cart' functionality.
     async init() {
-        // Fetch product data using the dataSource to find the specific product by its ID.
-        // The `findProductById` method returns a promise, so we use `await` to wait for the data.
-        const productData = await this.dataSource.findProductById(this.productId);
-
-        // Once the data is fetched, store it in the product object.
-        this.product = productData;
+        // Fetch product data dynamically using JSON
+        this.product = await this.dataSource.findProductById(this.productId);
 
         // Render the product details in the HTML.
-        document.querySelector('.product-details-container').innerHTML = productDetailsTemplate(this.product);
+        // REMOVED document.querySelector('.product-details-container').innerHTML = productDetailsTemplate(this.product);
+        
+        // Render product details dynamically instead of relying on a static class
+        this.renderProductDetails();
 
-        // Add event listener to 'Add to Cart' button after rendering.
-        // This ensures that when the button is clicked, the product is added to the shopping cart.
-        const addToCartButton = document.getElementById('addToCart');
-        addToCartButton.addEventListener('click', () => {
-            setLocalStorage('cart', this.product); // Adds the product to localStorage (cart)
-            renderCartCount(); // Updates the cart count displayed on the page
+        // Attach event listener to dynamically created 'Add to Cart' button
+        document.getElementById('addToCart').addEventListener('click', () => {
+            this.addToCart();
         });
     }
+
+    // This method dynamically generates and inserts product details into the page.
+    renderProductDetails() {
+        // Select the main container where the product details will be inserted
+        const mainElement = document.querySelector('main');
+        if (!mainElement) {
+            console.error(" No <main> element found! Ensure your HTML includes a <main> tag.");
+            return;
+        }
+
+        // Create the product details section dynamically
+        const productHTML = document.createElement('section');
+        productHTML.classList.add('product-detail');
+
+        // Populate the product details using the fetched JSON data
+        productHTML.innerHTML = `
+            <h3>${this.product.Brand.Name}</h3> <!-- Displays the product's brand -->
+            <h2 class="divider">${this.product.NameWithoutBrand}</h2> <!-- Displays the product's name without the brand -->
+            <img class="divider" src="${this.product.Images.PrimaryLarge}" alt="${this.product.NameWithoutBrand}" /> <!-- Displays the main product image -->
+            ${generateDiscount(this.product)} <!-- Generates price and discount details -->
+            <p class="product__color">${this.product.Colors[0].ColorName}</p> <!-- Displays the product's first color -->
+            <p class="product__description">${this.product.DescriptionHtmlSimple}</p> <!-- Displays a simplified HTML description of the product -->
+            <div class="product-detail__add">
+                <button id="addToCart" data-id="${this.product.Id}">Add to Cart</button> <!-- Add to Cart button -->
+            </div>`;
+
+        // Remove any existing content and append the newly created product details
+        mainElement.innerHTML = ''; // Clear previous content
+        mainElement.appendChild(productHTML);
+    }
+
+    // Adds the current product to the shopping cart and updates the cart count
+    addToCart() {
+        let cart = getLocalStorage("cart") || [];
+        
+        let existingItem = cart.find(item => item.Id === this.product.Id);
+        if (existingItem) {
+          existingItem.Q = (existingItem.Q || 1) + 1;
+        } else {
+          let optimizedData = {
+            Id: this.product.Id,
+            Name: this.product.NameWithoutBrand,
+            FinalPrice: this.product.FinalPrice,
+            Colors: this.product.Colors[0]?.ColorName || "N/A",
+            Q: 1
+          };
+          cart.push(optimizedData);
+        }
+      
+        setLocalStorage("cart", cart);
+        renderCartCount();
+        console.log("Added to cart:", getLocalStorage("cart")); // Debugging log
+      }
 }
