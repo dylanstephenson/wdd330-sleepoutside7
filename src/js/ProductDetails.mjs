@@ -91,10 +91,16 @@ export default class ProductDetail {
             Id: this.product.Id,
             Name: this.product.NameWithoutBrand,
             FinalPrice: this.product.FinalPrice,
-            Colors: this.product.Colors[0]?.ColorName || "N/A",
-            Q: 1
+            Colors: (this.product.Colors?.length > 0)
+                ? this.product.Colors[0].ColorName
+                : "N/A",
+            Q: 1,
+            Images: this.product.Images 
           };
-          cart.push(optimizedData);
+          console.log("Before pushing:", optimizedData); // Debugging log
+          optimizedData = JSON.parse(JSON.stringify(optimizedData));
+          cart.push({ ...optimizedData});
+          console.log("Cart AFTER pushing:", JSON.stringify(cart, null, 2)); // Debugging log
         }
       
         setLocalStorage("cart", cart);

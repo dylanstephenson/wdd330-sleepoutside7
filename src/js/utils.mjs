@@ -9,29 +9,12 @@ export function getLocalStorage(key) {
 }
 
 export function setLocalStorage(key, data) {
-  let existingData = getLocalStorage(key) || [];
-
-  // Check if item already exists
-  let item = existingData.find(item => item.Id === data.Id);
-  if (item) {
-    item.Q = (item.Q || 1) + 1;
-  } else {
-    // Store only essential product details to reduce storage space
-    let optimizedData = {
-      Id: data.Id,
-      Name: data.NameWithoutBrand,
-      FinalPrice: data.FinalPrice,
-      Colors: data.Colors[0]?.ColorName || "N/A",
-      Q: 1
-    };
-    existingData.push(optimizedData);
+  if (!key || !data) {
+    console.error("setLocalStorage: Invalid key or data", { key, data });
+    return;
   }
+  localStorage.setItem(key, JSON.stringify(data));
 
-  try {
-    localStorage.setItem("cart", JSON.stringify(existingData)); 
-  } catch (e) {
-    console.error("Local Storage Limit Exceeded. Consider clearing old items.");
-  }
 }
 
 

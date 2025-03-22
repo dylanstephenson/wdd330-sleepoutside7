@@ -76,7 +76,7 @@ function cartItemTemplate(item) {
     <li class='cart-card divider' id='${item.Id}'>
       <button class='close-btn' data-id='${item.Id}'>X</button>
       <a href='#' class='cart-card__image'>
-        <img src='${item.Image.PrimaryMedium}' alt='${item.Name}' />
+        <img src='${item.Images.PrimaryMedium}' alt='${item.Name}' />
       </a>
       <a href='#'>
         <h2 class='card__name'>${item.Name}</h2>
