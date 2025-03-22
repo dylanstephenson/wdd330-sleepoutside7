@@ -121,3 +121,14 @@ export function getCartCount() {
   }
   return cartCount;
 }
+
+//Create Breadcrumbs
+export function createBreadcrumbs(category="",count=null) {
+  const currentLocation = window.location.pathname;
+  const breadcrumbs = document.querySelector(".breadcrumbs");
+  if (currentLocation.includes("listing")) {
+    breadcrumbs.innerHTML = `${category} -> (${count} items)`;
+  } else if (currentLocation.includes("pages")) {
+    breadcrumbs.innerHTML = `${category}`;
+  }
+}

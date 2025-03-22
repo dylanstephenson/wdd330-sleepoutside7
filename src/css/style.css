@@ -309,3 +309,11 @@ span.product-percentage {
   font-size: 0.9rem;
   color: red;
 }
+
+/* style breadcrumbs */
+.breadcrumbs {
+  text-transform: capitalize;
+  padding-left: 1rem;
+  font-weight: 700;
+  padding-top: 0.5rem;
+}

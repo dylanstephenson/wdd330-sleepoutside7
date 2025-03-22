@@ -2,7 +2,7 @@
 // It feeds data into `product.js`, which then populates the `product_pages/index.html` page with the relevant information.
 // Additionally, it includes an 'Add to Cart' functionality for adding the product to the shopping cart.
 
-import { setLocalStorage, getLocalStorage, renderCartCount } from './utils.mjs';
+import { setLocalStorage, getLocalStorage, renderCartCount, createBreadcrumbs } from './utils.mjs';
 
 // Function to generate discount details based on price comparison
 export function generateDiscount(product) {
@@ -40,6 +40,9 @@ export default class ProductDetail {
         // Render the product details in the HTML.
         // REMOVED document.querySelector('.product-details-container').innerHTML = productDetailsTemplate(this.product);
         
+        //Render Breadcrumbs
+        createBreadcrumbs(this.product.Category);
+        
         // Render product details dynamically instead of relying on a static class
         this.renderProductDetails();
 
@@ -53,6 +56,8 @@ export default class ProductDetail {
     renderProductDetails() {
         // Select the main container where the product details will be inserted
         const mainElement = document.querySelector('main');
+        //render breadcrumbs
+
         if (!mainElement) {
             console.error(" No <main> element found! Ensure your HTML includes a <main> tag.");
             return;

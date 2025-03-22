@@ -23,7 +23,6 @@ sortBySelect.addEventListener("change", () => {
   if (myList) {
     myList.init(sortBySelect.value);
   }
-})
-
+});
 
 // finally call the init method to show our products
