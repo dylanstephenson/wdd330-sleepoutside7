@@ -1,4 +1,4 @@
-// ProductData class: Responsible for fetching product details from a server and providing methods
+// ExternalServices class: Responsible for fetching product details from a server and providing methods
 // to retrieve all products in a category and details for a specific product by ID.
 // This class is used by `product.js` to populate the product details in `product_pages/index.html`
 // by passing the fetched data to the `ProductDetails` component.
@@ -18,8 +18,8 @@ function convertToJson(res) {
   }
 }
 
-// Exporting ProductData class
-export default class ProductData {
+// Exporting ExternalServices class
+export default class ExternalServices {
   // Fetches and returns all products in a given category.
   async getData(category) {
     const response = await fetch(baseURL + `products/search/${category}`);
