@@ -36,17 +36,20 @@ export default class CheckoutProcess {
     
         // display the totals.
         this.displayOrderTotals();
-        window.onload = () => {
-            .textContent = total;
-            }
+        
       }
     
       displayOrderTotals() {
         // once the totals are all calculated display them in the order summary page
-        const tax = document.querySelector(`${this.outputSelector} #tax`);
-    
-    
+        const subtotal = document.querySelector(`${this.outputSelector} #subtotal`)
+        const tax = document.querySelector(`${this.outputSelector} #tax`)
+        const shipping = document.querySelector(`${this.outputSelector} #shipping`)
+        const orderTotal = document.querySelector(`${this.outputSelector} #orderTotal`)
+
+        subtotal.innerText = `$${this.itemTotal.toFixed(2)}`;
         tax.innerText = `$${this.tax.toFixed(2)}`;
+        shipping.innerText = `$${this.shipping.toFixed(2)}`;
+        orderTotal.innerText = `$${this.orderTotal.toFixed(2)}`;
       }
     }
     
