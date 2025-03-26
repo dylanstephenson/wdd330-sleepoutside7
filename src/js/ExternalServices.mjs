@@ -10,12 +10,13 @@
 const baseURL = import.meta.env.VITE_SERVER_URL 
 
 // Converts the response to JSON if the response is okay. Otherwise, throws an error.
-function convertToJson(res) {
-  if (res.ok) {
-    return res.json();
-  } else {
+async function convertToJson(res) {
+  const text = await res.text();
+  console.log(text)
+  if (!res.ok) {
     throw new Error("Bad Response");
   }
+  return JSON.parse(text);
 }
 
 // Exporting ExternalServices class
@@ -32,5 +33,15 @@ export default class ExternalServices {
     const products = await fetch(`${baseURL}product/${id}`);
     const data = await convertToJson(products);
     return data.Result;
+  }
+  async checkout(payload) {
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    };
+    return await fetch(`${baseURL}checkout/`, options).then(convertToJson);
   }
 }
