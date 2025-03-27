@@ -17,7 +17,6 @@ export function setLocalStorage(key, data) {
 
 }
 
-
 // Set a listener for both touchend and click
 export function setClick(selector, callback) {
   qs(selector).addEventListener("touchend", (event) => {

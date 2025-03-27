@@ -1,4 +1,4 @@
-// ProductData class: Responsible for fetching product details from a server and providing methods
+// ExternalServices class: Responsible for fetching product details from a server and providing methods
 // to retrieve all products in a category and details for a specific product by ID.
 // This class is used by `product.js` to populate the product details in `product_pages/index.html`
 // by passing the fetched data to the `ProductDetails` component.
@@ -10,16 +10,17 @@
 const baseURL = import.meta.env.VITE_SERVER_URL 
 
 // Converts the response to JSON if the response is okay. Otherwise, throws an error.
-function convertToJson(res) {
-  if (res.ok) {
-    return res.json();
-  } else {
+async function convertToJson(res) {
+  const text = await res.text();
+  console.log(text)
+  if (!res.ok) {
     throw new Error("Bad Response");
   }
+  return JSON.parse(text);
 }
 
-// Exporting ProductData class
-export default class ProductData {
+// Exporting ExternalServices class
+export default class ExternalServices {
   // Fetches and returns all products in a given category.
   async getData(category) {
     const response = await fetch(baseURL + `products/search/${category}`);
@@ -32,5 +33,15 @@ export default class ProductData {
     const products = await fetch(`${baseURL}product/${id}`);
     const data = await convertToJson(products);
     return data.Result;
+  }
+  async checkout(payload) {
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    };
+    return await fetch(`${baseURL}checkout/`, options).then(convertToJson);
   }
 }
