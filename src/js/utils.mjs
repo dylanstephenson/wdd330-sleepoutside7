@@ -14,7 +14,7 @@ export function setLocalStorage(key, data) {
     return;
   }
   localStorage.setItem(key, JSON.stringify(data));
-
+  
 }
 
 // Set a listener for both touchend and click
