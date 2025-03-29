@@ -22,16 +22,16 @@
             <fieldset>
               <legend>Enter Your Name</legend>
               <label for="fname">First Name:</label>
-              <input type="text" id="fname" name="fname" required>
+              <input type="text" id="fname" name="fname" required />
               <label for="lname">Last Name:</label>
-              <input type="text" id="lname" name="lname" required>
+              <input type="text" id="lname" name="lname" required />
             </fieldset>
             <fieldset>
               <legend>Enter Your Address</legend>
               <label for="street">Street Address:</label>
-              <input type="text" id="street" name="street" required>
+              <input type="text" id="street" name="street" required />
               <label for="city">City:</label>
-              <input type="text" id="city" name="city" required>
+              <input type="text" id="city" name="city" required />
               <label for="state">State:</label>
               <select id="state" name="state" required>
                 <option value="AL">Alabama</option>
@@ -87,20 +87,38 @@
                 <option value="WY">Wyoming</option>
               </select>
               <label for="zip">Zip:</label>
-              <input type="text" id="zip" name="zip" required>
+              <input type="text" id="zip" name="zip" required />
             </fieldset>
             <fieldset>
               <legend>Enter Your Payment</legend>
               <label for="cardNumber">Card Number:</label>
-              <input type="text" id="cardNumber" name="cardNumber" required>
+              <input
+                type="text"
+                name="cardNumber"
+                required
+                pattern="\d{16}"
+                title="Enter a 16-digit card number"
+              />
               <label for="expiration">Expiration:</label>
-              <input type="text" id="expiration" name="expiration" required>
+              <input
+                type="text"
+                name="expiration"
+                required
+                pattern="\d{2}/\d{2}"
+                title="Enter expiration as MM/YY"
+              />
               <label for="code">CVV:</label>
-              <input type="text" id="code" name="code" maxlength="3" required>
+              <input
+                type="text"
+                name="cvv"
+                required
+                pattern="\d{3}"
+                title="Enter a 3-digit CVV"
+              />
             </fieldset>
             <fieldset class="checkout-summary">
               <legend>Order Summary</legend>
-    
+
               <div class="order__summary">
                 <div>Items</div>
                 <div id="num-items"></div>
@@ -117,9 +135,7 @@
             <button type="submit" id="checkoutSubmit">Checkout</button>
           </form>
         </div>
-        <div id="checkout-totals">
-          
-        </div>
+        <div id="checkout-totals"></div>
       </section>
     </main>
 

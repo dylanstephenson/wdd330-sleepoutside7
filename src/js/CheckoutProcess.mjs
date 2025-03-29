@@ -1,4 +1,4 @@
-import { getLocalStorage, } from "./utils.mjs"
+import { getLocalStorage,  alertMessage, removeAllAlerts, } from "./utils.mjs"
 import ExternalServices from "./ExternalServices.mjs";
 // Creating class that will add the totals to the checkout information
 // Convert formDataToJSON for the checkout form
@@ -43,6 +43,12 @@ export default class CheckoutProcess {
     
       init() {
         this.list = getLocalStorage(this.key);
+        
+        if (!this.list || this.list.length === 0) {
+          alertMessage("Your cart is empty. Please add items before checking out.");
+          return;
+        }
+      
         this.calculateItemSummary();
       }
     
@@ -92,20 +98,37 @@ export default class CheckoutProcess {
       async checkout() {
         const form = document.forms["checkout-form"];
         const order = formDataToJSON(form);
-
+      
         order.orderDate = new Date().toISOString();
         order.orderTotal = this.orderTotal;
         order.tax = this.tax;
         order.shipping = this.shipping;
         order.items = packageItems(this.list);
       
-      try {
-        const response = await services.checkout(order);
-        console.log(response);
-      } catch(err) {
-        console.log(err);
+        try {
+          const response = await services.checkout(order);
+          console.log(response);
+      
+          // SUCCESS: redirect to confirmation and clear cart
+          localStorage.removeItem(this.key);
+          window.location.href = "success.html";
+      
+        } catch (err) {
+          console.error("Checkout failed:", err);
+          
+          let message = "There was a problem processing your order. Please try again.";
+        
+          // If the message is an object (field-level errors), format them into a list
+          if (err?.message && typeof err.message === "object") {
+            const messages = Object.entries(err.message).map(
+              ([field, msg]) => `<strong>${field}</strong>: ${msg}`
+            );
+            message = messages.join("<br>");
+          }
+        
+          alertMessage(message);
+        }
       }
-    }
 }
     
 
