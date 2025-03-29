@@ -15,9 +15,8 @@ document.querySelector("#checkoutSubmit").addEventListener("click", (e) => {
     const checkoutForm = document.forms[0];
     const isValid = checkoutForm.checkValidity();
     checkoutForm.reportValidity();
+  
     if (isValid) {
-        order.checkout();
-        window.location.href ='/checkout/success.html'
-        localStorage.clear();
+      order.checkout(); // Let the CheckoutProcess handle success/failure
     }
-})
+  });

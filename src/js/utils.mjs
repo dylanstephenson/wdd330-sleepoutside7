@@ -131,3 +131,40 @@ export function createBreadcrumbs(category="",count=null) {
     breadcrumbs.innerHTML = `${category}`;
   }
 }
+
+// Alert Message for Cart
+export function alertMessage(message, scroll = true, duration = 3000) {
+  const alert = document.createElement("div");
+  alert.classList.add("alert");
+  alert.innerHTML = `<p>${message}</p><span>X</span>`;
+
+  alert.addEventListener("click", function (e) {
+    if (e.target.tagName == "SPAN") {
+      main.removeChild(this);
+    }
+  });
+  const main = document.querySelector("main");
+  main.prepend(alert);
+  if (scroll) window.scrollTo(0, 0);
+}
+
+export function removeAllAlerts() {
+  const alerts = document.querySelectorAll(".alert");
+  alerts.forEach((alert) => document.querySelector("main").removeChild(alert));
+}
+
+// animate cart and count 
+export function animateCartIcon() {
+  const cartIcon = document.querySelector(".cart");
+  const cartCount = document.getElementById("cart-count");
+
+  if (cartIcon && cartCount) {
+    cartIcon.classList.add("animate");
+    cartCount.classList.add("animate");
+
+    setTimeout(() => {
+      cartIcon.classList.remove("animate");
+      cartCount.classList.remove("animate");
+    }, 600); // Match the CSS animation duration
+  }
+}
