@@ -493,3 +493,53 @@ span.product-percentage {
   overflow: hidden;
   clip: rect(1px, 1px, 1px, 1px);
 }
+
+/* Modal functionality */
+
+.product-modal {
+  position: fixed; /* Keeps it fixed on the screen */
+  top: 0;
+  left: 0;
+  width: 100vw; /* Full width of the viewport */
+  height: 100vh; /* Full height of the viewport */
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent dark overlay */
+  display: flex;
+  align-items: center; /* Centers content vertically */
+  justify-content: center; /* Centers content horizontally */
+  z-index: 1000; /* Ensures it appears above other elements */
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  position: relative;
+  text-align: center;
+}
+
+.product__description {
+  display: block;
+  margin-top: 10px;
+}
+
+.close-modal {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  cursor: pointer;
+}
+.product-details-button {
+  border-radius: 6px;
+  height: 40px;
+  font-size: 1rem;
+  border: 1px solid var(--secondary-color);
+}
+.product-details-button:hover {
+  background-color: white;
+  color: var(--secondary-color);
+  transition: .3s;
+}
