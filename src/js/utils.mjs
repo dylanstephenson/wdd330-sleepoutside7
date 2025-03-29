@@ -152,3 +152,19 @@ export function removeAllAlerts() {
   const alerts = document.querySelectorAll(".alert");
   alerts.forEach((alert) => document.querySelector("main").removeChild(alert));
 }
+
+// animate cart and count 
+export function animateCartIcon() {
+  const cartIcon = document.querySelector(".cart");
+  const cartCount = document.getElementById("cart-count");
+
+  if (cartIcon && cartCount) {
+    cartIcon.classList.add("animate");
+    cartCount.classList.add("animate");
+
+    setTimeout(() => {
+      cartIcon.classList.remove("animate");
+      cartCount.classList.remove("animate");
+    }, 600); // Match the CSS animation duration
+  }
+}
