@@ -12,5 +12,12 @@ document.querySelector('#zip').addEventListener("blur", order.calculateOrderTota
 
 document.querySelector("#checkoutSubmit").addEventListener("click", (e) => {
     e.preventDefault();
-    order.checkout();
+    const checkoutForm = document.forms[0];
+    const isValid = checkoutForm.checkValidity();
+    checkoutForm.reportValidity();
+    if (isValid) {
+        order.checkout();
+        window.location.href ='/checkout/success.html'
+        localStorage.clear();
+    }
 })
