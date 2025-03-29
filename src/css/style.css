@@ -493,3 +493,9 @@ span.product-percentage {
   overflow: hidden;
   clip: rect(1px, 1px, 1px, 1px);
 }
+
+
+/* Style modal */
+.modal-list {
+  list-style-type: none;
+}

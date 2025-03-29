@@ -1,6 +1,14 @@
 //js for the main html page
 import { loadHeaderFooter } from "./utils.mjs";
 
+//Import modal function
+import modal from "./modal.mjs";
+
+//load modal on first visit following document loading
+document.addEventListener("DOMContentLoaded", () => {
+  modal();
+});
+
 //load header/footer wk 3
 loadHeaderFooter();
 
