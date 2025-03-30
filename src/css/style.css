@@ -543,3 +543,8 @@ span.product-percentage {
   color: var(--secondary-color);
   transition: .3s;
 }
+
+/* Style modal */
+.modal-list {
+  list-style-type: none;
+}
