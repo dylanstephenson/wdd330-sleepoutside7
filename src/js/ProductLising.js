@@ -33,4 +33,4 @@ sortBySelect.addEventListener("change", () => {
   }
 });
 
-// finally call the init method to show our products
+
